@@ -8,7 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const uri = "mongodb+srv://mannasarkar05_db_user:dACXZPaF9yYTZZIU@cluster0.owkxryp.mongodb.net/?appName=Cluster0";
+// রেন্ডার থেকে ভ্যারিয়েবল নেওয়ার জন্য এই কোডটি থাকবে
+const uri = process.env.MONGODB_URI;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -72,8 +73,4 @@ app.put('/posts/react/:id', async (req, res) => {
 
 app.get('/', (req, res) => {
   res.send('FaceBoard Server is running with Database!');
-});
-
-app.listen(5000, () => {
-  console.log('🚀 Server is running on port 5000!');
 });
