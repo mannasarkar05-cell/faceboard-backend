@@ -8,12 +8,15 @@ app.use(express.json());
 
 const uri = process.env.MONGODB_URI;
 
+// এখানে অতিরিক্ত tls এবং tlsAllowInvalidCertificates যুক্ত করা হয়েছে যা SSL ত্রুটি দূর করবে
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
+  tls: true,
+  tlsAllowInvalidCertificates: true
 });
 
 async function run() {
