@@ -2,8 +2,6 @@ const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -15,12 +13,7 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  },
-  ssl: true,
-  tls: true,
-  tlsAllowInvalidCertificates: true,
-  tlsInsecure: true,
-  family: 4
+  }
 });
 
 async function run() {
@@ -47,7 +40,7 @@ app.post('/add-post', async (req, res) => {
   }
 });
 
-app.get('/posts', async (req, res) => {
+app.get('/posts', async (pathReq, res) => {
   try {
     const query = {};
     const cursor = postsCollection.find(query);
