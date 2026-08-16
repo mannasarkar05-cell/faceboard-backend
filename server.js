@@ -8,7 +8,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// রেন্ডার থেকে ভ্যারিয়েবল নেওয়ার জন্য এই কোডটি থাকবে
 const uri = process.env.MONGODB_URI;
 
 const client = new MongoClient(uri, {
@@ -73,4 +72,9 @@ app.put('/posts/react/:id', async (req, res) => {
 
 app.get('/', (req, res) => {
   res.send('FaceBoard Server is running with Database!');
+});
+
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`🚀 Server is running on port ${port}!`);
 });
