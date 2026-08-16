@@ -30,7 +30,8 @@ run().catch(console.dir);
 const db = client.db("faceboardDB");
 const postsCollection = db.collection("posts");
 
-app.post('/add-post', async (req, res) => {
+// পোস্ট যোগ করার রাউট
+app.post('/api/add-post', async (req, res) => {
   try {
     const newPost = req.body;
     const result = await postsCollection.insertOne(newPost);
@@ -40,7 +41,8 @@ app.post('/add-post', async (req, res) => {
   }
 });
 
-app.get('/posts', async (pathReq, res) => {
+// সব পোস্ট পাওয়ার রাউট (ফ্রন্টএন্ডের সাথে মিল রেখে /api/posts করা হয়েছে)
+app.get('/api/posts', async (pathReq, res) => {
   try {
     const query = {};
     const cursor = postsCollection.find(query);
@@ -51,7 +53,8 @@ app.get('/posts', async (pathReq, res) => {
   }
 });
 
-app.put('/posts/react/:id', async (req, res) => {
+// লাইক বা রিঅ্যাক্ট আপডেট করার রাউট
+app.put('/api/posts/react/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const filter = { _id: new ObjectId(id) };
