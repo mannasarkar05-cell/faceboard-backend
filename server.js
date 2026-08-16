@@ -16,8 +16,10 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
+  ssl: true,
   tls: true,
   tlsAllowInvalidCertificates: true,
+  tlsInsecure: true,
   family: 4
 });
 
