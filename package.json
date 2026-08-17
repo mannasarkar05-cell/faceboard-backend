@@ -1,4 +1,5 @@
-"name": "faceboard-backend",
+{
+  "name": "faceboard-backend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
