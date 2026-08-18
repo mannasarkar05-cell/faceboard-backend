@@ -2,14 +2,14 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// মিডলওয়্যার
+// মিডলওয়্যার
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// সাময়িকভাবে ডেটা সংরক্ষণের জন্য মেমোরি অ্যারে (পরে এখানে ডাটাবেজ যুক্ত করতে পারবেন)
+// সাময়িকভাবে ডেটা সংরক্ষণের জন্য মেমোরি অ্যারে (পরে এখানে ডাটাবেজ যুক্ত করতে পারবেন)
 let posts = [
   {
     id: 1,
@@ -26,12 +26,12 @@ let posts = [
   }
 ];
 
-// ১. সকল পোস্ট পাওয়ার জন্য GET রিকোয়েস্ট
+// ১. সকল পোস্ট পাওয়ার জন্য GET রিকোয়েস্ট
 app.get('/api/posts', (req, res) => {
   res.json(posts);
 });
 
-// ২. নতুন পোস্ট সেভ করার জন্য POST রিকোয়েস্ট
+// ২. নতুন পোস্ট সেভ করার জন্য POST রিকোয়েস্ট
 app.post('/api/posts', (req, res) => {
   const newPost = {
     id: Date.now(),
@@ -42,5 +42,5 @@ app.post('/api/posts', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Backend server is running on http://localhost:${PORT}`);
+  console.log(`Backend server is running on port ${PORT}`);
 });
