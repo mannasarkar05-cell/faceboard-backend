@@ -6,9 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.MONGODB_URI;
+const uri = "mongodb+srv://mannasarkar05_db_user:Db982798@cluster0.owkxryp.mongodb.net/faceboardDB?appName=Cluster0";
 
-// এখানে অতিরিক্ত tls এবং tlsAllowInvalidCertificates যুক্ত করা হয়েছে যা SSL ত্রুটি দূর করবে
+// এখানে অতিরিক্ত tls এবং tlsAllowInvalidCertificates যুক্ত করা হয়েছে যা SSL ত্রুটি দূর করবে
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -27,6 +27,13 @@ async function run() {
     const db = client.db("faceboardDB");
     const postsCollection = db.collection("posts");
 
+    // ইউজার কালেকশন বা রাউটের জন্য মডেল যাতে auth.js কাজ করতে পারে
+    // (যদি User মডেল সরাসরি mongoose দিয়ে কানেক্ট করা থাকে, তবে নিচের authRoute কাজ করবে)
+    
+    // Auth রুটটি এখানে যুক্ত করা হলো
+    const authRoute = require('./routes/auth');
+    app.use('/api/auth', authRoute);
+
     // পোস্ট যোগ করার রাউট
     app.post('/api/add-post', async (req, res) => {
       try {
@@ -38,7 +45,7 @@ async function run() {
       }
     });
 
-    // সব পোস্ট পাওয়ার রাউট
+    // সব পোস্ট পাওয়ার রাউট
     app.get('/api/posts', async (pathReq, res) => {
       try {
         const query = {};
