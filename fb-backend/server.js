@@ -7,7 +7,8 @@ const PORT = 5000;
 
 // মিডলওয়্যার
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // সাময়িকভাবে ডেটা সংরক্ষণের জন্য মেমোরি অ্যারে (পরে এখানে ডাটাবেজ যুক্ত করতে পারবেন)
 let posts = [
