@@ -88,6 +88,18 @@ app.delete('/api/posts/:id', async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+app.patch('/api/posts/:id/like', async (req, res) => {
+  try {
+    const { likes, isLiked } = req.body;
+    await postsCollection.updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { likes, isLiked } }
+    );
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
  
 app.get('/api/stories', async (req, res) => {
   try {
