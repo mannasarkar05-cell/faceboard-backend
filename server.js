@@ -101,6 +101,19 @@ app.patch('/api/posts/:id/like', async (req, res) => {
   }
 });
  
+app.patch('/api/posts/:id/comment', async (req, res) => {
+  try {
+    const { comments } = req.body;
+    await postsCollection.updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { comments } }
+    );
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 app.get('/api/stories', async (req, res) => {
   try {
     const stories = storiesCollection ? await storiesCollection.find({}).toArray() : [];
