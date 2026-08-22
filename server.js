@@ -89,7 +89,8 @@ app.post('/api/upload', (req, res) => {
     if (!req.file) {
       return res.status(400).json({ success: false, error: "No file uploaded" });
     }
-    res.json({ success: true, url: req.file.path });
+    const autoFormatUrl = req.file.path.replace('/upload/', '/upload/f_auto,q_auto/');
+res.json({ success: true, url: autoFormatUrl });
   });
 });
 
