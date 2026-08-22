@@ -35,6 +35,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'faceboard',
+    resource_type: 'auto',
     allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'mp4', 'heic', 'heif', 'webp', 'mov'],
   },
 });
