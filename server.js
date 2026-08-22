@@ -1,6 +1,9 @@
 const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
  
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
  
@@ -22,6 +25,21 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
  
 // MongoDB URI এখন এনভায়রনমেন্ট ভেরিয়েবল থেকে নেবে (সুরক্ষিত থাকবে)
 const uri = process.env.MONGODB_URI;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'faceboard',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'mp4'],
+  },
+});
+
+const upload = multer({ storage: storage });
  
 const client = new MongoClient(uri, {
   serverApi: {
@@ -62,6 +80,17 @@ app.get('/api/posts', async (req, res) => {
   }
 });
  
+app.post('/api/upload', upload.single('media'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: "No file uploaded" });
+    }
+    res.json({ success: true, url: req.file.path });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 app.post('/api/posts', async (req, res) => {
   try {
     const newPost = { ...req.body, createdAt: new Date() };
