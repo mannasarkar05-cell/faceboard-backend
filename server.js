@@ -80,15 +80,17 @@ app.get('/api/posts', async (req, res) => {
   }
 });
  
-app.post('/api/upload', upload.single('media'), async (req, res) => {
-  try {
+app.post('/api/upload', (req, res) => {
+  upload.single('media')(req, res, function (err) {
+    if (err) {
+      console.error('Upload error:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
     if (!req.file) {
       return res.status(400).json({ success: false, error: "No file uploaded" });
     }
     res.json({ success: true, url: req.file.path });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
+  });
 });
 
 app.post('/api/posts', async (req, res) => {
