@@ -4,6 +4,8 @@ const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth');
  
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
  
@@ -22,9 +24,13 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use('/api/auth', authRoutes);
  
 // MongoDB URI এখন এনভায়রনমেন্ট ভেরিয়েবল থেকে নেবে (সুরক্ষিত থাকবে)
 const uri = process.env.MONGODB_URI;
+mongoose.connect(uri)
+  .then(() => console.log("Mongoose connected!"))
+  .catch((err) => console.error("Mongoose connection error:", err));
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,

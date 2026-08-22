@@ -12,7 +12,7 @@ router.post('/register', async (req, res) => {
     // চেক করা ইউজার আগে থেকেই আছে কিনা
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json("이-เมล অথবা ইউজার ইতিমধ্যে রেজিস্টার্ড!");
+      return res.status(400).json("এই ইমেইল দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে!");
     }
 
     // পাসওয়ার্ড হ্যাশ বা এনক্রিপ্ট করা
